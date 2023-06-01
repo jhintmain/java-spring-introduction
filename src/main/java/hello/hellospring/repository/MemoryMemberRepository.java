@@ -5,14 +5,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository // 스프링 컨테이너에 알려준다
-public class MemoryMemberRepository implements MemberRepository{
-    private static Map<Long,Member> store = new HashMap<>();
+// 스프링 컨테이너에 알려준다
+@Repository
+public class MemoryMemberRepository implements MemberRepository {
+    private static Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L;
+
     @Override
     public Member save(Member member) {
         member.setId(++sequence);
-        store.put(member.getId(),member);
+        store.put(member.getId(), member);
         return member;
     }
 
@@ -24,7 +26,7 @@ public class MemoryMemberRepository implements MemberRepository{
     @Override
     public Optional<Member> findByName(String name) {
         return store.values().stream()
-                .filter(member->member.getName().equals(name))
+                .filter(member -> member.getName().equals(name))
                 .findAny();
     }
 
@@ -33,7 +35,7 @@ public class MemoryMemberRepository implements MemberRepository{
         return new ArrayList<>(store.values());
     }
 
-    public void clearStore(){
+    public void clearStore() {
         store.clear();
     }
 
